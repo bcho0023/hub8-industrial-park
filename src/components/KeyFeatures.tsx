@@ -1,0 +1,146 @@
+"use client";
+
+import { useRef } from "react";
+import {
+  Warehouse,
+  Maximize,
+  Sun,
+  ShieldCheck,
+  Building2,
+  Zap,
+} from "lucide-react";
+import { property } from "@/data/property";
+import { useGSAP } from "@/lib/gsap";
+
+const iconMap = {
+  Warehouse,
+  Maximize,
+  Sun,
+  ShieldCheck,
+  Building2,
+  Zap,
+} as const;
+
+export default function KeyFeatures() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const statsRef = useRef<HTMLDivElement>(null);
+  const featuresRef = useRef<HTMLDivElement>(null);
+
+  useGSAP((gsap) => {
+    if (!statsRef.current || !featuresRef.current) return;
+
+    // Counter animation for stats
+    const statEls = statsRef.current.querySelectorAll("[data-stat-value]");
+    statEls.forEach((el) => {
+      const target = Number(el.getAttribute("data-stat-value"));
+      if (!target) return;
+      gsap.from(el, {
+        textContent: 0,
+        duration: 1.2,
+        ease: "power2.out",
+        snap: { textContent: 1 },
+        scrollTrigger: {
+          trigger: el,
+          start: "top 80%",
+          toggleActions: "play none none none",
+        },
+      });
+    });
+
+    // Fade up stat blocks
+    gsap.from(statsRef.current.children, {
+      y: 30,
+      opacity: 0,
+      duration: 0.8,
+      stagger: 0.1,
+      ease: "power2.out",
+      scrollTrigger: {
+        trigger: statsRef.current,
+        start: "top 80%",
+      },
+    });
+
+    // Fade up feature cards
+    gsap.from(featuresRef.current.children, {
+      y: 30,
+      opacity: 0,
+      duration: 0.8,
+      stagger: 0.15,
+      ease: "power2.out",
+      scrollTrigger: {
+        trigger: featuresRef.current,
+        start: "top 80%",
+      },
+    });
+  });
+
+  return (
+    <section
+      id="features"
+      ref={sectionRef}
+      className="bg-white py-20 sm:py-28 lg:py-32"
+    >
+      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        {/* Stats row */}
+        <div
+          ref={statsRef}
+          className="mb-20 grid grid-cols-2 gap-8 sm:mb-24 lg:grid-cols-4 lg:gap-12"
+        >
+          {property.stats.map((stat) => (
+            <div key={stat.label} className="text-center">
+              {"displayValue" in stat && stat.displayValue ? (
+                <p className="font-display text-3xl text-charcoal sm:text-4xl lg:text-5xl">
+                  {stat.displayValue}
+                </p>
+              ) : (
+                <p
+                  className="font-display text-3xl text-charcoal sm:text-4xl lg:text-5xl"
+                  data-stat-value={"value" in stat ? stat.value : undefined}
+                >
+                  {"value" in stat ? stat.value : ""}
+                </p>
+              )}
+              <p className="mt-2 text-xs uppercase tracking-[0.2em] text-medium-grey sm:text-sm">
+                {stat.label}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        {/* Section heading */}
+        <div className="mb-12 text-center">
+          <p className="text-xs uppercase tracking-[0.3em] text-medium-grey">
+            Why Hub 8
+          </p>
+          <h2 className="mt-3 font-display text-3xl text-charcoal sm:text-4xl">
+            Built for Business
+          </h2>
+        </div>
+
+        {/* Feature cards */}
+        <div
+          ref={featuresRef}
+          className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
+        >
+          {property.features.map((feature) => {
+            const Icon = iconMap[feature.icon];
+            return (
+              <div
+                key={feature.title}
+                className="group rounded-sm border border-soft-grey bg-warm-white p-8 transition-colors hover:border-brand/30"
+              >
+                <Icon className="mb-4 h-6 w-6 text-brand-dark" strokeWidth={1.5} />
+                <h3 className="mb-2 text-base font-medium text-charcoal">
+                  {feature.title}
+                </h3>
+                <p className="text-sm leading-relaxed text-medium-grey">
+                  {feature.description}
+                </p>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
