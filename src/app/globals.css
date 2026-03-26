@@ -31,6 +31,25 @@
   }
 }
 
+@keyframes fade-out {
+  0% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.animate-fade-out {
+  animation: fade-out 4.5s ease forwards;
+}
+
+@keyframes highlight-border {
+  0%, 100% { border-color: var(--color-soft-grey); box-shadow: none; }
+  50% { border-color: var(--color-brand); box-shadow: 0 0 12px rgba(252, 207, 8, 0.3); }
+}
+
+.animate-highlight-border {
+  animation: highlight-border 1s ease-in-out 5;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

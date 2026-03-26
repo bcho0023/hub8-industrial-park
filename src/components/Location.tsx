@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { MapPin } from "lucide-react";
 import { property } from "@/data/property";
 import { useGSAP } from "@/lib/gsap";
+import ZoomableImage from "@/components/ZoomableImage";
 
 export default function Location() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -42,21 +43,17 @@ export default function Location() {
         </div>
 
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
-          {/* Map */}
+          {/* Location map */}
           <div className="animate-fade-up lg:col-span-8">
-            <div className="relative aspect-[16/9] overflow-hidden rounded-sm bg-soft-grey">
-              <iframe
-                src={property.location.mapEmbedUrl}
-                width="100%"
-                height="100%"
-                style={{ border: 0 }}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                title="Hub 8 Industrial Park Location"
-                className="absolute inset-0"
-              />
-            </div>
+            <ZoomableImage
+              src={property.siteMap.image}
+              alt="Hub 8 Industrial Park location map"
+              width={1600}
+              height={1424}
+              fullWidth={3199}
+              fullHeight={2848}
+              sizes="(max-width: 1024px) 100vw, 66vw"
+            />
           </div>
 
           {/* Info */}

@@ -57,11 +57,14 @@ export default function Navigation() {
               e.preventDefault();
               handleNavClick("#hero");
             }}
-            className={`font-display text-lg tracking-wide transition-colors lg:text-xl ${
-              scrolled ? "text-charcoal" : "text-white"
-            }`}
+            className="flex items-center gap-2"
           >
-            Hub 8
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={scrolled ? "/images/logo-dark.svg" : "/images/logo-light.svg"}
+              alt="Hub 8 Industrial Park"
+              className="h-12 w-auto transition-opacity lg:h-14"
+            />
           </a>
 
           {/* Desktop nav */}

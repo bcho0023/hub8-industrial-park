@@ -3,6 +3,7 @@ export const property = {
   nameZh: "合发工业园",
   tagline: "Freehold Semi-Detached Industrial Park",
   subtitle: "Ampangan, Negeri Sembilan",
+  logo: "/images/logo.png",
 
   developer: {
     name: "Kiara Kasturi Sdn Bhd",
@@ -68,6 +69,33 @@ export const property = {
     },
   ],
 
+  floorplans: [
+    {
+      label: "Type A",
+      description: "2-Storey Semi-Detached Factory",
+      sublabel: "A1 (35' x 70') & A2 (35' x 85')",
+      image: "/blueprints/floorplan-typeA.png",
+      svg: "/blueprints/floorplan-typeA.svg",
+    },
+    {
+      label: "Type B1",
+      description: "3-Storey Semi-Detached Factory with Lift",
+      sublabel: "B1 / B2 / B3 variants",
+      image: "/blueprints/floorplan-typeB1.png",
+      svg: "/blueprints/floorplan-typeB1.svg",
+    },
+  ],
+
+  sitePlan: {
+    image: "/blueprints/siteplan.png",
+    svg: "/blueprints/siteplan.svg",
+  },
+
+  siteMap: {
+    image: "/blueprints/sitemap.png",
+    svg: "/blueprints/sitemap.svg",
+  },
+
   units: [
     {
       type: "A1",
@@ -77,7 +105,6 @@ export const property = {
       builtUp: 3595,
       floors: ["Ground Floor", "First Floor"],
       hasLift: false,
-      blueprint: "/blueprints/placeholder.svg",
     },
     {
       type: "A2",
@@ -87,7 +114,6 @@ export const property = {
       builtUp: 4114,
       floors: ["Ground Floor", "First Floor"],
       hasLift: false,
-      blueprint: "/blueprints/placeholder.svg",
     },
     {
       type: "B1",
@@ -97,7 +123,6 @@ export const property = {
       builtUp: 5924,
       floors: ["Ground Floor", "First Floor", "Second Floor"],
       hasLift: true,
-      blueprint: "/blueprints/placeholder.svg",
     },
     {
       type: "B2",
@@ -107,7 +132,6 @@ export const property = {
       builtUp: 6358,
       floors: ["Ground Floor", "First Floor", "Second Floor"],
       hasLift: true,
-      blueprint: "/blueprints/placeholder.svg",
     },
     {
       type: "B3",
@@ -117,7 +141,6 @@ export const property = {
       builtUp: 7181,
       floors: ["Ground Floor", "First Floor", "Second Floor"],
       hasLift: true,
-      blueprint: "/blueprints/placeholder.svg",
     },
   ],
 
@@ -187,6 +210,7 @@ export const property = {
     { label: "About", href: "#about" },
     { label: "Gallery", href: "#gallery" },
     { label: "Floorplans", href: "#floorplans" },
+    { label: "Site Plan", href: "#siteplan" },
     { label: "Location", href: "#location" },
     { label: "Contact", href: "#contact" },
   ],

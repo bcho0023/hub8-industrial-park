@@ -1,53 +1,22 @@
 "use client";
 
-import Image from "next/image";
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useRef, useState, useEffect } from "react";
 import { property } from "@/data/property";
 import { useGSAP } from "@/lib/gsap";
+import ZoomableImage from "@/components/ZoomableImage";
 
 export default function Floorplans() {
-  const [activeTab, setActiveTab] = useState(0);
-  const containerRef = useRef<HTMLDivElement>(null);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const panzoomRef = useRef<any>(null);
   const sectionRef = useRef<HTMLElement>(null);
-
-  const unit = property.units[activeTab];
-
-  const initPanzoom = useCallback(async () => {
-    if (!containerRef.current) return;
-
-    // Destroy previous instance
-    panzoomRef.current?.destroy();
-
-    const Panzoom = (await import("@panzoom/panzoom")).default;
-    const instance = Panzoom(containerRef.current, {
-      maxScale: 4,
-      minScale: 0.5,
-      contain: "outside",
-    });
-
-    containerRef.current.addEventListener("wheel", (e) => {
-      instance.zoomWithWheel(e);
-    });
-
-    panzoomRef.current = instance;
-  }, []);
-
-  useEffect(() => {
-    initPanzoom();
-    return () => {
-      panzoomRef.current?.destroy();
-    };
-  }, [activeTab, initPanzoom]);
+  const [showTooltip, setShowTooltip] = useState(false);
 
   useGSAP((gsap) => {
     if (!sectionRef.current) return;
 
-    gsap.from(sectionRef.current.querySelector(".floorplan-content"), {
-      y: 30,
+    gsap.from(sectionRef.current.querySelectorAll(".floorplan-card"), {
+      y: 40,
       opacity: 0,
       duration: 0.8,
+      stagger: 0.2,
       ease: "power2.out",
       scrollTrigger: {
         trigger: sectionRef.current,
@@ -56,8 +25,42 @@ export default function Floorplans() {
     });
   });
 
+  // Show tooltip once when floorplan images are 60% into the viewport
+  const floorplanGridRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!floorplanGridRef.current) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setShowTooltip(true);
+          setTimeout(() => setShowTooltip(false), 5000);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.45 }
+    );
+
+    observer.observe(floorplanGridRef.current);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section id="floorplans" ref={sectionRef} className="py-20 sm:py-28 lg:py-32">
+    <section
+      id="floorplans"
+      ref={sectionRef}
+      className="relative py-20 sm:py-28 lg:py-32"
+    >
+      {/* Section-level tooltip — shows once for all zoomable content */}
+      {showTooltip && (
+        <div className="pointer-events-none fixed inset-x-0 top-24 z-40 flex justify-center">
+          <div className="animate-fade-out rounded-lg bg-charcoal/90 px-6 py-3 text-sm tracking-wide text-white/90 shadow-lg backdrop-blur-sm">
+            Scroll to zoom · Drag to pan · Click ⤢ to enlarge
+          </div>
+        </div>
+      )}
+
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mb-12 text-center">
           <p className="text-xs uppercase tracking-[0.3em] text-medium-grey">
@@ -68,74 +71,65 @@ export default function Floorplans() {
           </h2>
         </div>
 
-        <div className="floorplan-content">
-          {/* Tabs */}
-          <div className="mb-8 flex flex-wrap justify-center gap-2">
-            {property.units.map((u, i) => (
-              <button
-                key={u.type}
-                onClick={() => setActiveTab(i)}
-                className={`rounded-sm px-5 py-2.5 text-sm uppercase tracking-widest transition-colors ${
-                  i === activeTab
-                    ? "bg-charcoal text-white"
-                    : "bg-soft-grey text-medium-grey hover:bg-charcoal/10"
-                }`}
-              >
-                Type {u.type}
-              </button>
-            ))}
-          </div>
+        {/* Unit specs summary */}
+        <div className="mb-12 overflow-x-auto">
+          <table className="mx-auto text-sm">
+            <thead>
+              <tr className="border-b border-soft-grey text-xs uppercase tracking-widest text-medium-grey">
+                <th className="px-4 py-3 text-left font-medium">Type</th>
+                <th className="px-4 py-3 text-left font-medium">
+                  Configuration
+                </th>
+                <th className="px-4 py-3 text-left font-medium">Lot Size</th>
+                <th className="px-4 py-3 text-right font-medium">Built-up</th>
+              </tr>
+            </thead>
+            <tbody>
+              {property.units.map((u) => (
+                <tr key={u.type} className="border-b border-soft-grey/50">
+                  <td className="px-4 py-3 font-medium text-charcoal">
+                    {u.type}
+                  </td>
+                  <td className="px-4 py-3 text-medium-grey">{u.config}</td>
+                  <td className="px-4 py-3 text-medium-grey">{u.lotSize}</td>
+                  <td className="px-4 py-3 text-right text-medium-grey">
+                    {u.builtUp.toLocaleString()} sf
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
 
-          {/* Unit info */}
-          <div className="mb-6 flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-sm text-medium-grey">
-            <span>{unit.config}</span>
-            <span>Lot: {unit.lotSize} ({unit.lotSf.toLocaleString()} sf)</span>
-            <span>Built-up: {unit.builtUp.toLocaleString()} sf</span>
-            {unit.hasLift && (
-              <span className="rounded-sm bg-brand/20 px-2 py-0.5 text-xs font-medium text-charcoal">
-                With Lift
-              </span>
-            )}
-          </div>
-
-          {/* Blueprint viewer */}
-          <div className="relative mx-auto max-w-4xl overflow-hidden rounded-sm border border-soft-grey bg-white">
-            <div className="flex items-center justify-between border-b border-soft-grey px-4 py-2">
-              <p className="text-xs text-medium-grey">
-                Scroll to zoom · Drag to pan
-              </p>
-              <button
-                onClick={() => panzoomRef.current?.reset()}
-                className="text-xs text-medium-grey hover:text-charcoal"
-              >
-                Reset view
-              </button>
-            </div>
-            <div className="relative aspect-[4/3] cursor-grab active:cursor-grabbing">
-              <div ref={containerRef} className="h-full w-full">
-                <Image
-                  src={unit.blueprint}
-                  alt={`Floorplan Type ${unit.type}`}
-                  fill
-                  className="object-contain"
-                  sizes="(max-width: 1024px) 100vw, 896px"
-                  unoptimized={unit.blueprint.endsWith(".svg")}
-                />
+        {/* All floorplans displayed at once */}
+        <div
+          ref={floorplanGridRef}
+          className="grid grid-cols-1 gap-12 lg:grid-cols-2"
+        >
+          {property.floorplans.map((plan) => (
+            <div key={plan.label} className="floorplan-card">
+              <div className="mb-4">
+                <h3 className="font-display text-2xl text-charcoal">
+                  {plan.label}
+                </h3>
+                <p className="mt-1 text-sm text-medium-grey">
+                  {plan.description}
+                </p>
+                <p className="text-xs text-medium-grey">{plan.sublabel}</p>
               </div>
-            </div>
-          </div>
 
-          {/* Floor labels */}
-          <div className="mt-4 flex justify-center gap-4">
-            {unit.floors.map((floor) => (
-              <span
-                key={floor}
-                className="text-xs uppercase tracking-wider text-medium-grey"
-              >
-                {floor}
-              </span>
-            ))}
-          </div>
+              <ZoomableImage
+                src={plan.image}
+                alt={`${plan.label} floorplan`}
+                width={800}
+                height={1200}
+                fullWidth={3200}
+                fullHeight={4800}
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                highlight={showTooltip}
+              />
+            </div>
+          ))}
         </div>
       </div>
     </section>

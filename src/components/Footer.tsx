@@ -5,9 +5,12 @@ export default function Footer() {
     <footer className="border-t border-soft-grey bg-charcoal py-12">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="flex flex-col items-center gap-6 text-center">
-          <p className="font-display text-lg text-white">
-            {property.name}
-          </p>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/images/logo-light.svg"
+            alt={property.name}
+            className="h-12 w-auto"
+          />
 
           <div className="flex gap-4">
             {property.contact.phones.map((phone) => (
