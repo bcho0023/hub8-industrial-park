@@ -46,10 +46,22 @@ export default function ZoomableImage({
       contain: "outside",
       cursor: "grab",
       panOnlyWhenZoomed: true,
+      handleStartEvent: (e: Event) => {
+        // On touch devices at 100% scale, don't intercept — let page scroll
+        if (e instanceof TouchEvent && instance.getScale() <= 1) {
+          return;
+        }
+        e.preventDefault();
+      },
     });
 
     innerRef.current.addEventListener("panzoomchange", () => {
-      setScale(instance.getScale());
+      const s = instance.getScale();
+      setScale(s);
+      // Toggle touch-action so browser handles scroll at 100%
+      if (containerRef.current) {
+        containerRef.current.style.touchAction = s <= 1 ? "pan-y" : "none";
+      }
     });
 
     containerRef.current?.addEventListener(
@@ -238,7 +250,10 @@ export default function ZoomableImage({
       <div
         ref={containerRef}
         className="relative overflow-hidden"
-        style={{ cursor: scale > 1 ? "grab" : "zoom-in" }}
+        style={{
+          cursor: scale > 1 ? "grab" : "zoom-in",
+          touchAction: scale <= 1 ? "pan-y" : "none",
+        }}
       >
         <div ref={innerRef} className="p-4">
           <Image
