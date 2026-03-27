@@ -26,7 +26,8 @@ export default function Hero() {
       },
     });
 
-    // Content fade in on load
+    // Reveal the container, then animate children in
+    gsap.set(contentRef.current, { opacity: 1 });
     gsap.from(contentRef.current.children, {
       y: 30,
       opacity: 0,
@@ -35,6 +36,13 @@ export default function Hero() {
       ease: "power2.out",
       delay: 0.3,
     });
+
+    return () => {
+      // Ensure content is visible if component re-mounts
+      if (contentRef.current) {
+        contentRef.current.style.opacity = "1";
+      }
+    };
   });
 
   return (
@@ -56,10 +64,10 @@ export default function Hero() {
         <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/70" />
       </div>
 
-      {/* Content */}
+      {/* Content — starts invisible, GSAP reveals it */}
       <div
         ref={contentRef}
-        className="relative z-10 flex h-full flex-col items-center justify-center px-6 text-center text-white"
+        className="relative z-10 flex h-full flex-col items-center justify-center px-6 text-center text-white opacity-0"
       >
         <p className="mb-4 text-xs uppercase tracking-[0.3em] text-white/80 sm:text-sm">
           {property.subtitle}
