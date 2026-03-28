@@ -13,16 +13,19 @@ export default function Gallery() {
   useGSAP((gsap) => {
     if (!gridRef.current) return;
 
-    gsap.from(gridRef.current.children, {
-      y: 40,
-      opacity: 0,
-      duration: 0.8,
-      stagger: 0.15,
-      ease: "power2.out",
-      scrollTrigger: {
-        trigger: gridRef.current,
-        start: "top 80%",
-      },
+    Array.from(gridRef.current.children).forEach((el, i) => {
+      gsap.set(el, { y: 40, opacity: 0 });
+      gsap.to(el, {
+        y: 0,
+        opacity: 1,
+        delay: i * 0.12,
+        duration: 0.8,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: el,
+          start: "top 85%",
+        },
+      });
     });
   });
 

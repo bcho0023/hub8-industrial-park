@@ -12,26 +12,29 @@ export default function About() {
   useGSAP((gsap) => {
     if (!textRef.current || !imageRef.current) return;
 
-    gsap.from(textRef.current.children, {
-      y: 30,
-      opacity: 0,
-      duration: 0.8,
-      stagger: 0.15,
-      ease: "power2.out",
-      scrollTrigger: {
-        trigger: textRef.current,
-        start: "top 80%",
-      },
+    Array.from(textRef.current.children).forEach((el) => {
+      gsap.set(el, { y: 30, opacity: 0 });
+      gsap.to(el, {
+        y: 0,
+        opacity: 1,
+        duration: 0.8,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: el,
+          start: "top 85%",
+        },
+      });
     });
 
-    gsap.from(imageRef.current, {
-      opacity: 0,
-      scale: 1.05,
+    gsap.set(imageRef.current, { opacity: 0, scale: 1.05 });
+    gsap.to(imageRef.current, {
+      opacity: 1,
+      scale: 1,
       duration: 1,
       ease: "power2.out",
       scrollTrigger: {
         trigger: imageRef.current,
-        start: "top 80%",
+        start: "top 85%",
       },
     });
   });

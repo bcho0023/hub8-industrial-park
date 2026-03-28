@@ -11,16 +11,19 @@ export default function SitePlan() {
   useGSAP((gsap) => {
     if (!sectionRef.current) return;
 
-    gsap.from(sectionRef.current.querySelectorAll(".animate-fade-up"), {
-      y: 30,
-      opacity: 0,
-      duration: 0.8,
-      stagger: 0.15,
-      ease: "power2.out",
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: "top 80%",
-      },
+    const els = sectionRef.current.querySelectorAll(".animate-fade-up");
+    els.forEach((el) => {
+      gsap.set(el, { y: 30, opacity: 0 });
+      gsap.to(el, {
+        y: 0,
+        opacity: 1,
+        duration: 0.8,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: el,
+          start: "top 85%",
+        },
+      });
     });
   });
 

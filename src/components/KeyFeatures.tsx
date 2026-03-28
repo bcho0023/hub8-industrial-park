@@ -41,36 +41,41 @@ export default function KeyFeatures() {
         snap: { textContent: 1 },
         scrollTrigger: {
           trigger: el,
-          start: "top 80%",
+          start: "top 85%",
           toggleActions: "play none none none",
         },
       });
     });
 
-    // Fade up stat blocks
-    gsap.from(statsRef.current.children, {
-      y: 30,
-      opacity: 0,
-      duration: 0.8,
-      stagger: 0.1,
-      ease: "power2.out",
-      scrollTrigger: {
-        trigger: statsRef.current,
-        start: "top 80%",
-      },
+    // Fade up each stat block individually
+    Array.from(statsRef.current.children).forEach((el) => {
+      gsap.set(el, { y: 30, opacity: 0 });
+      gsap.to(el, {
+        y: 0,
+        opacity: 1,
+        duration: 0.8,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: el,
+          start: "top 85%",
+        },
+      });
     });
 
-    // Fade up feature cards
-    gsap.from(featuresRef.current.children, {
-      y: 30,
-      opacity: 0,
-      duration: 0.8,
-      stagger: 0.15,
-      ease: "power2.out",
-      scrollTrigger: {
-        trigger: featuresRef.current,
-        start: "top 80%",
-      },
+    // Fade up feature cards one by one
+    Array.from(featuresRef.current.children).forEach((el, i) => {
+      gsap.set(el, { y: 30, opacity: 0 });
+      gsap.to(el, {
+        y: 0,
+        opacity: 1,
+        delay: i * 0.12,
+        duration: 0.8,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: el,
+          start: "top 85%",
+        },
+      });
     });
   });
 

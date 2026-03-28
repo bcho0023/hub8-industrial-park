@@ -13,16 +13,18 @@ export default function Location() {
     if (!sectionRef.current) return;
 
     const els = sectionRef.current.querySelectorAll(".animate-fade-up");
-    gsap.from(els, {
-      y: 30,
-      opacity: 0,
-      duration: 0.8,
-      stagger: 0.15,
-      ease: "power2.out",
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: "top 80%",
-      },
+    els.forEach((el) => {
+      gsap.set(el, { y: 30, opacity: 0 });
+      gsap.to(el, {
+        y: 0,
+        opacity: 1,
+        duration: 0.8,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: el,
+          start: "top 85%",
+        },
+      });
     });
   });
 

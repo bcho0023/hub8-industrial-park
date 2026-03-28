@@ -12,16 +12,19 @@ export default function Floorplans() {
   useGSAP((gsap) => {
     if (!sectionRef.current) return;
 
-    gsap.from(sectionRef.current.querySelectorAll(".floorplan-card"), {
-      y: 40,
-      opacity: 0,
-      duration: 0.8,
-      stagger: 0.2,
-      ease: "power2.out",
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: "top 80%",
-      },
+    const els = sectionRef.current.querySelectorAll(".animate-fade-up, .floorplan-card");
+    els.forEach((el) => {
+      gsap.set(el, { y: 30, opacity: 0 });
+      gsap.to(el, {
+        y: 0,
+        opacity: 1,
+        duration: 0.8,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: el,
+          start: "top 85%",
+        },
+      });
     });
   });
 
@@ -62,7 +65,7 @@ export default function Floorplans() {
       )}
 
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mb-12 text-center">
+        <div className="animate-fade-up mb-12 text-center">
           <p className="text-xs uppercase tracking-[0.3em] text-medium-grey">
             Unit Layouts
           </p>
@@ -72,7 +75,7 @@ export default function Floorplans() {
         </div>
 
         {/* Unit specs summary */}
-        <div className="mb-12 overflow-x-auto">
+        <div className="animate-fade-up mb-12 overflow-x-auto">
           <table className="mx-auto text-sm">
             <thead>
               <tr className="border-b border-soft-grey text-xs uppercase tracking-widest text-medium-grey">
