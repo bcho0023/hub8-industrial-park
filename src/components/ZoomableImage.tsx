@@ -64,6 +64,13 @@ export default function ZoomableImage({
       }
     });
 
+    // Release pointer capture at 100% scale so touch scrolling works
+    innerRef.current.addEventListener("pointerdown", (e: PointerEvent) => {
+      if (instance.getScale() <= 1 && e.pointerType === "touch") {
+        innerRef.current?.releasePointerCapture(e.pointerId);
+      }
+    });
+
     containerRef.current?.addEventListener(
       "wheel",
       (e) => {
