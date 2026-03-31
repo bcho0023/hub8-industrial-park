@@ -3,28 +3,36 @@
 import Image from "next/image";
 import { useRef, useEffect, useCallback } from "react";
 import { Maximize2 } from "lucide-react";
-import { property } from "@/data/property";
 import { useGSAP } from "@/lib/gsap";
 
-export default function Gallery() {
+const progressImages = [
+  { src: "/images/progress-1.jpg", alt: "Site progress - aerial view", w: 1080, h: 610 },
+  { src: "/images/progress-2.jpg", alt: "Site progress - construction", w: 2560, h: 1444 },
+  { src: "/images/progress-3.jpg", alt: "Site progress - development", w: 1280, h: 960 },
+];
+
+export default function SiteProgress() {
+  const sectionRef = useRef<HTMLElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
   const lightboxRef = useRef<import("photoswipe").default | null>(null);
 
   useGSAP((gsap) => {
     if (!gridRef.current) return;
 
+    const heading = sectionRef.current?.querySelector(".animate-fade-up");
+    if (heading) {
+      gsap.set(heading, { y: 30, opacity: 0 });
+      gsap.to(heading, {
+        y: 0, opacity: 1, duration: 0.8, ease: "power2.out",
+        scrollTrigger: { trigger: heading, start: "top 85%" },
+      });
+    }
+
     Array.from(gridRef.current.children).forEach((el, i) => {
       gsap.set(el, { y: 40, opacity: 0 });
       gsap.to(el, {
-        y: 0,
-        opacity: 1,
-        delay: i * 0.12,
-        duration: 0.8,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: el,
-          start: "top 85%",
-        },
+        y: 0, opacity: 1, delay: i * 0.12, duration: 0.8, ease: "power2.out",
+        scrollTrigger: { trigger: el, start: "top 85%" },
       });
     });
   });
@@ -32,15 +40,13 @@ export default function Gallery() {
   const openLightbox = useCallback(async (index: number) => {
     const PhotoSwipe = (await import("photoswipe")).default;
 
-    const items = property.gallery.map((img) => ({
-      src: img.src,
-      w: 1920,
-      h: 1080,
-      alt: img.alt,
-    }));
-
     const pswp = new PhotoSwipe({
-      dataSource: items,
+      dataSource: progressImages.map((img) => ({
+        src: img.src,
+        w: img.w,
+        h: img.h,
+        alt: img.alt,
+      })),
       index,
       bgOpacity: 0.95,
       showHideAnimationType: "fade",
@@ -49,7 +55,6 @@ export default function Gallery() {
       maxZoomLevel: 4,
     });
 
-    // Scroll wheel controls zoom
     pswp.on("bindEvents", () => {
       pswp.element?.addEventListener("wheel", (e: WheelEvent) => {
         e.preventDefault();
@@ -58,26 +63,20 @@ export default function Gallery() {
         const curr = slide.currZoomLevel || 1;
         const factor = e.deltaY < 0 ? 1.2 : 0.8;
         const newZoom = Math.min(
-          Math.max(curr * factor, slide.zoomLevels.initial || 0.5),
-          4
+          Math.max(curr * factor, slide.zoomLevels.initial || 0.5), 4
         );
         slide.zoomTo(newZoom, { x: e.clientX, y: e.clientY }, 100);
       }, { passive: false });
     });
 
-    // Navigation instructions tooltip
     pswp.on("openingAnimationEnd", () => {
       const tooltip = document.createElement("div");
-      tooltip.textContent = "Scroll to zoom · Drag to pan";
+      tooltip.textContent = "Scroll to zoom \u00b7 Drag to pan";
       tooltip.style.cssText =
         "position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(44,44,44,0.85);backdrop-filter:blur(8px);color:rgba(255,255,255,0.9);font-size:13px;font-family:sans-serif;padding:12px 24px;border-radius:8px;z-index:200;pointer-events:none;transition:opacity 0.5s ease;letter-spacing:0.5px;";
       pswp.element?.appendChild(tooltip);
-      setTimeout(() => {
-        tooltip.style.opacity = "0";
-      }, 2000);
-      setTimeout(() => {
-        tooltip.remove();
-      }, 2500);
+      setTimeout(() => { tooltip.style.opacity = "0"; }, 2000);
+      setTimeout(() => { tooltip.remove(); }, 2500);
     });
 
     pswp.on("uiRegister", () => {
@@ -105,37 +104,31 @@ export default function Gallery() {
         return btn;
       };
 
-      const zoomOutBtn = makeBtn("−", "Zoom out", () => {
-        const currZoom = pswp.currSlide?.currZoomLevel || 1;
-        pswp.currSlide?.zoomTo(currZoom * 0.7, undefined, 200);
-      });
-
-      const zoomInBtn = makeBtn("+", "Zoom in", () => {
-        const currZoom = pswp.currSlide?.currZoomLevel || 1;
-        pswp.currSlide?.zoomTo(currZoom * 1.4, undefined, 200);
-      });
-
-      const resetBtn = makeBtn("↺", "Reset zoom", () => {
-        const fitZoom = pswp.currSlide?.zoomLevels.initial || 1;
-        pswp.currSlide?.zoomTo(fitZoom, undefined, 200);
-      });
-
-      bar.appendChild(zoomOutBtn);
+      bar.appendChild(makeBtn("\u2212", "Zoom out", () => {
+        const z = pswp.currSlide?.currZoomLevel || 1;
+        pswp.currSlide?.zoomTo(z * 0.7, undefined, 200);
+      }));
       bar.appendChild(scaleLabel);
-      bar.appendChild(zoomInBtn);
+      bar.appendChild(makeBtn("+", "Zoom in", () => {
+        const z = pswp.currSlide?.currZoomLevel || 1;
+        pswp.currSlide?.zoomTo(z * 1.4, undefined, 200);
+      }));
 
       const sep = document.createElement("div");
       sep.style.cssText = "width:1px;height:16px;background:rgba(255,255,255,0.2);margin:0 4px;";
       bar.appendChild(sep);
-      bar.appendChild(resetBtn);
+
+      bar.appendChild(makeBtn("\u21ba", "Reset zoom", () => {
+        const fit = pswp.currSlide?.zoomLevels.initial || 1;
+        pswp.currSlide?.zoomTo(fit, undefined, 200);
+      }));
 
       pswp.element?.appendChild(bar);
 
       const updateScale = () => {
         const currZoom = pswp.currSlide?.currZoomLevel || 1;
         const fitZoom = pswp.currSlide?.zoomLevels.initial || 1;
-        const pct = Math.round((currZoom / fitZoom) * 100);
-        scaleLabel.textContent = `${pct}%`;
+        scaleLabel.textContent = `${Math.round((currZoom / fitZoom) * 100)}%`;
       };
 
       pswp.on("zoomPanUpdate", updateScale);
@@ -148,20 +141,22 @@ export default function Gallery() {
   }, []);
 
   useEffect(() => {
-    return () => {
-      lightboxRef.current?.destroy();
-    };
+    return () => { lightboxRef.current?.destroy(); };
   }, []);
 
   return (
-    <section id="gallery" className="bg-white py-20 sm:py-28 lg:py-32">
+    <section
+      id="siteprogress"
+      ref={sectionRef}
+      className="bg-white py-20 sm:py-28 lg:py-32"
+    >
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mb-12 text-center">
+        <div className="animate-fade-up mb-12 text-center">
           <p className="text-xs uppercase tracking-[0.3em] text-medium-grey">
-            Visual Tour
+            Construction Updates
           </p>
           <h2 className="mt-3 text-3xl font-bold text-charcoal sm:text-4xl">
-            Gallery
+            Site Progress
           </h2>
         </div>
 
@@ -169,7 +164,7 @@ export default function Gallery() {
           ref={gridRef}
           className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
         >
-          {property.gallery.map((img, i) => (
+          {progressImages.map((img, i) => (
             <button
               key={img.src}
               onClick={() => openLightbox(i)}

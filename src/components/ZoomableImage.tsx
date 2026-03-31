@@ -16,6 +16,8 @@ interface ZoomableImageProps {
   sizes?: string;
   /** When true, pulse the border to draw attention */
   highlight?: boolean;
+  /** Fixed aspect ratio for the zoomable area (e.g. "2/3") to equalize sizes */
+  aspectRatio?: string;
 }
 
 export default function ZoomableImage({
@@ -27,6 +29,7 @@ export default function ZoomableImage({
   fullHeight,
   sizes = "100vw",
   highlight = false,
+  aspectRatio,
 }: ZoomableImageProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
@@ -260,6 +263,7 @@ export default function ZoomableImage({
         style={{
           cursor: scale > 1 ? "grab" : "zoom-in",
           touchAction: scale <= 1 ? "pan-y" : "none",
+          ...(aspectRatio ? { aspectRatio } : {}),
         }}
       >
         <div ref={innerRef} className="p-4">

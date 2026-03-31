@@ -38,7 +38,7 @@ export default function SitePlan() {
           <p className="text-xs uppercase tracking-[0.3em] text-medium-grey">
             Development Layout
           </p>
-          <h2 className="mt-3 font-display text-3xl text-charcoal sm:text-4xl">
+          <h2 className="mt-3 text-3xl font-bold text-charcoal sm:text-4xl">
             Site Plan
           </h2>
         </div>
@@ -53,6 +53,10 @@ export default function SitePlan() {
             fullHeight={7017}
             sizes="(max-width: 1024px) 100vw, 896px"
           />
+          <p className="mt-4 text-center text-xs leading-relaxed text-charcoal/80">
+            <span className="font-bold">Note:</span>{" "}
+            {property.sitePlan.note?.replace(/^Note:\s*/i, "")}
+          </p>
         </div>
       </div>
     </section>

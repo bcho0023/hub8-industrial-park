@@ -63,7 +63,7 @@ export default function Navigation() {
             <img
               src={scrolled ? "/images/logo-dark.svg" : "/images/logo-light.svg"}
               alt="Hub 8 Industrial Park"
-              className="h-12 w-auto transition-opacity lg:h-14"
+              className="h-16 w-auto transition-opacity lg:h-20"
             />
           </a>
 

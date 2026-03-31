@@ -3,9 +3,11 @@ import Hero from "@/components/Hero";
 import KeyFeatures from "@/components/KeyFeatures";
 import About from "@/components/About";
 import Gallery from "@/components/Gallery";
-import Floorplans from "@/components/Floorplans";
-import SitePlan from "@/components/SitePlan";
 import Location from "@/components/Location";
+import SitePlan from "@/components/SitePlan";
+import Floorplans from "@/components/Floorplans";
+import SiteProgress from "@/components/SiteProgress";
+import AboutUs from "@/components/AboutUs";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 
@@ -18,9 +20,11 @@ export default function Home() {
         <KeyFeatures />
         <About />
         <Gallery />
-        <Floorplans />
-        <SitePlan />
         <Location />
+        <SitePlan />
+        <Floorplans />
+        <SiteProgress />
+        <AboutUs />
         <Contact />
       </main>
       <Footer />

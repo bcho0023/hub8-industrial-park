@@ -29,7 +29,7 @@ export default function KeyFeatures() {
   useGSAP((gsap) => {
     if (!statsRef.current || !featuresRef.current) return;
 
-    // Counter animation for stats
+    // Counter animation for single numeric stats
     const statEls = statsRef.current.querySelectorAll("[data-stat-value]");
     statEls.forEach((el) => {
       const target = Number(el.getAttribute("data-stat-value"));
@@ -46,6 +46,47 @@ export default function KeyFeatures() {
         },
       });
     });
+
+    // Counter animation for range stats (from and to)
+    const rangeEls = statsRef.current.querySelectorAll("[data-range-value]");
+    rangeEls.forEach((el) => {
+      const target = Number(el.getAttribute("data-range-value"));
+      if (!target) return;
+
+      // Format with commas during animation
+      const obj = { val: 0 };
+      gsap.to(obj, {
+        val: target,
+        duration: 0.8,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: el,
+          start: "top 85%",
+          toggleActions: "play none none none",
+        },
+        onUpdate: () => {
+          el.textContent = Math.round(obj.val).toLocaleString();
+        },
+      });
+    });
+
+    // Letter stagger animation for Freehold text
+    const freeholdEls = statsRef.current.querySelectorAll(".freehold-letter");
+    if (freeholdEls.length > 0) {
+      gsap.set(freeholdEls, { opacity: 0, y: 20 });
+      gsap.to(freeholdEls, {
+        opacity: 1,
+        y: 0,
+        duration: 0.4,
+        stagger: 0.05,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: freeholdEls[0].parentElement,
+          start: "top 85%",
+          toggleActions: "play none none none",
+        },
+      });
+    }
 
     // Fade up each stat block individually
     Array.from(statsRef.current.children).forEach((el) => {
@@ -89,27 +130,62 @@ export default function KeyFeatures() {
         {/* Stats row */}
         <div
           ref={statsRef}
-          className="mb-20 grid grid-cols-2 gap-8 sm:mb-24 lg:grid-cols-4 lg:gap-12"
+          className="relative mb-20 grid grid-cols-2 gap-8 border-b border-soft-grey pb-10 sm:mb-24 sm:pb-12 lg:grid-cols-4 lg:gap-12"
         >
-          {property.stats.map((stat) => (
-            <div key={stat.label} className="text-center">
-              {"displayValue" in stat && stat.displayValue ? (
-                <p className="font-display text-3xl text-charcoal sm:text-4xl lg:text-5xl">
-                  {stat.displayValue}
-                </p>
-              ) : (
+          {property.stats.map((stat) => {
+            // Range stat (e.g. 3,595 - 7,181 ft²)
+            if ("rangeFrom" in stat) {
+              return (
+                <div key={stat.label} className="text-center">
+                  <p className="whitespace-nowrap text-xl font-bold text-charcoal sm:text-2xl lg:text-3xl">
+                    <span data-range-value={stat.rangeFrom}>0</span>
+                    <span className="mx-1 text-medium-grey">-</span>
+                    <span data-range-value={stat.rangeTo}>0</span>
+                    <span className="ml-1 text-sm font-medium text-medium-grey sm:text-base">
+                      {stat.unit}
+                    </span>
+                  </p>
+                  <p className="mt-2 text-xs uppercase tracking-[0.2em] text-medium-grey sm:text-sm">
+                    {stat.label}
+                  </p>
+                </div>
+              );
+            }
+
+            // Display value stat (e.g. Freehold)
+            if ("displayValue" in stat && stat.displayValue) {
+              return (
+                <div key={stat.label} className="text-center">
+                  <p className="text-3xl font-bold text-charcoal sm:text-4xl lg:text-5xl">
+                    {stat.displayValue.split("").map((letter, i) => (
+                      <span key={i} className="freehold-letter inline-block">
+                        {letter}
+                      </span>
+                    ))}
+                  </p>
+                  <p className="mt-2 text-xs uppercase tracking-[0.2em] text-medium-grey sm:text-sm">
+                    {stat.label}
+                  </p>
+                </div>
+              );
+            }
+
+            // Numeric counter stat (e.g. 20)
+            return (
+              <div key={stat.label} className="text-center">
                 <p
-                  className="font-display text-3xl text-charcoal sm:text-4xl lg:text-5xl"
+                  className="text-3xl font-bold text-charcoal sm:text-4xl lg:text-5xl"
                   data-stat-value={"value" in stat ? stat.value : undefined}
                 >
                   {"value" in stat ? stat.value : ""}
                 </p>
-              )}
-              <p className="mt-2 text-xs uppercase tracking-[0.2em] text-medium-grey sm:text-sm">
-                {stat.label}
-              </p>
-            </div>
-          ))}
+                <p className="mt-2 text-xs uppercase tracking-[0.2em] text-medium-grey sm:text-sm">
+                  {stat.label}
+                </p>
+              </div>
+            );
+          })}
+          <div className="absolute -bottom-px left-1/2 h-0.5 w-10 -translate-x-1/2 bg-brand" />
         </div>
 
         {/* Section heading */}
@@ -117,7 +193,7 @@ export default function KeyFeatures() {
           <p className="text-xs uppercase tracking-[0.3em] text-medium-grey">
             Why Hub 8
           </p>
-          <h2 className="mt-3 font-display text-3xl text-charcoal sm:text-4xl">
+          <h2 className="mt-3 text-3xl font-bold text-charcoal sm:text-4xl">
             Built for Business
           </h2>
         </div>
@@ -138,7 +214,7 @@ export default function KeyFeatures() {
                 <h3 className="mb-2 text-base font-medium text-charcoal">
                   {feature.title}
                 </h3>
-                <p className="text-sm leading-relaxed text-medium-grey">
+                <p className="text-sm leading-relaxed text-charcoal/70">
                   {feature.description}
                 </p>
               </div>

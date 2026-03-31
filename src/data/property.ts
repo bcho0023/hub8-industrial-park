@@ -12,26 +12,37 @@ export const property = {
     established: 1973,
     address:
       "Level 3, Wisma Peters, No.1, Jalan PJS 1/2, Taman Petaling Utama, 46150 Petaling Jaya, Selangor",
-    generalLine: "03-77829988",
+    generalLine: "03-7782 9988",
+    website: "https://peters.com.my/",
   },
 
   contact: {
     phones: ["011 1300 3062", "011 1300 3063"],
+    whatsapp: "01113003062",
   },
 
   stats: [
-    { value: 46, label: "Industrial Units" },
-    { value: 26, label: "Acres of Land" },
-    { value: 5, label: "Unit Types" },
-    { label: "Freehold", displayValue: "Freehold" },
+    { label: "Acres of Land", value: 20 },
+    { label: "Land Title", displayValue: "Freehold" },
+    {
+      label: "Built-Up",
+      rangeFrom: 3595,
+      rangeTo: 7181,
+      unit: "ft²",
+    },
+    {
+      label: "Typical Lot Sizes",
+      rangeFrom: 7181,
+      rangeTo: 7800,
+      unit: "ft²",
+    },
   ] as const,
 
   about: {
     heading: "Unlock Your Future at Hub 8 Ampangan",
     paragraphs: [
-      "Situated on 26 acres of prime freehold land, our industrial park offers a remarkable opportunity for entrepreneurs to establish their ventures. Our park boasts of 46 semi-detached units comprising 2 and 3 storey lots.",
-      "These units are meticulously designed to cater to diverse business needs, each built to maximise functionality and efficiency. We are also a guarded community, providing a safe and secure environment for all occupants.",
-      "Come, elevate your ambitions at Hub 8 today.",
+      "Situated on 20 acres of prime freehold land, our industrial park offers an excellent opportunity for entrepreneurs to establish and grow their ventures through thoughtfully designed semi-detached industrial units built for functionality, efficiency, and long-term flexibility.",
+      "Strategically located with direct access to the LEKAS Highway, the development provides seamless connectivity to your customers, vendors, and business partners, with having convenient access to Kuala Lumpur, Senawang, and Seremban for efficient and scalable operations.",
     ],
     image: "/images/about.jpg",
   },
@@ -78,7 +89,7 @@ export const property = {
       svg: "/blueprints/floorplan-typeA.svg",
     },
     {
-      label: "Type B1",
+      label: "Type B",
       description: "3-Storey Semi-Detached Factory with Lift",
       sublabel: "B1 / B2 / B3 variants",
       image: "/blueprints/floorplan-typeB1.png",
@@ -89,6 +100,7 @@ export const property = {
   sitePlan: {
     image: "/blueprints/siteplan.png",
     svg: "/blueprints/siteplan.svg",
+    note: "Note: Selected lots may include additional land and lot sizes may vary. Please refer to the sales team for specific lot details.",
   },
 
   siteMap: {
@@ -194,10 +206,10 @@ export const property = {
   ],
 
   location: {
-    lat: 2.7258,
-    lng: 102.0086,
+    lat: 2.745806898753726,
+    lng: 101.99303091271108,
     mapEmbedUrl:
-      "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.5!2d102.0086!3d2.7258!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMsKwNDMnMzMuMCJOIDEwMsKwMDAnMzEuMCJF!5e0!3m2!1sen!2smy!4v1234567890",
+      "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.5!2d101.993!3d2.7458!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMsKwNDQnNDUuMCJOIDEwMcKwNTknMzUuMCJF!5e0!3m2!1sen!2smy!4v1234567890",
     highlights: [
       "Direct Lekas Highway Access",
       "Fast Connectivity to Kuala Lumpur, Seremban, and Senawang",
@@ -209,9 +221,11 @@ export const property = {
     { label: "Features", href: "#features" },
     { label: "About", href: "#about" },
     { label: "Gallery", href: "#gallery" },
-    { label: "Floorplans", href: "#floorplans" },
-    { label: "Site Plan", href: "#siteplan" },
     { label: "Location", href: "#location" },
+    { label: "Site Plan", href: "#siteplan" },
+    { label: "Floorplans", href: "#floorplans" },
+    { label: "Site Progress", href: "#siteprogress" },
+    { label: "About Us", href: "#aboutus" },
     { label: "Contact", href: "#contact" },
   ],
 };

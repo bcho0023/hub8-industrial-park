@@ -32,14 +32,14 @@ export default function Location() {
     <section
       id="location"
       ref={sectionRef}
-      className="bg-white py-20 sm:py-28 lg:py-32"
+      className="bg-light-grey py-20 sm:py-28 lg:py-32"
     >
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="animate-fade-up mb-12 text-center">
           <p className="text-xs uppercase tracking-[0.3em] text-medium-grey">
             Strategic Location
           </p>
-          <h2 className="mt-3 font-display text-3xl text-charcoal sm:text-4xl">
+          <h2 className="mt-3 text-3xl font-bold text-charcoal sm:text-4xl">
             Location
           </h2>
         </div>
@@ -65,7 +65,7 @@ export default function Location() {
                 Key Highlights
               </h3>
               {property.location.highlights.map((h) => (
-                <p key={h} className="mb-2 text-sm leading-relaxed text-medium-grey">
+                <p key={h} className="mb-2 text-sm leading-relaxed text-charcoal/70">
                   {h}
                 </p>
               ))}
@@ -85,7 +85,7 @@ export default function Location() {
                       <MapPin className="h-3.5 w-3.5 text-brand-dark" />
                       <span className="text-sm text-charcoal">{d.place}</span>
                     </div>
-                    <span className="text-sm font-medium text-medium-grey">
+                    <span className="text-sm font-medium text-charcoal/70">
                       {d.km} km
                     </span>
                   </div>

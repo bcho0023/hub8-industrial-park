@@ -69,17 +69,11 @@ export default function Hero() {
         ref={contentRef}
         className="relative z-10 flex h-full flex-col items-center justify-center px-6 text-center text-white opacity-0"
       >
-        <p className="mb-4 text-xs uppercase tracking-[0.3em] text-white/80 sm:text-sm">
-          {property.subtitle}
-        </p>
-        <h1 className="font-display text-4xl leading-tight sm:text-5xl md:text-6xl lg:text-7xl">
-          {property.name}
-        </h1>
-        <p className="mt-2 font-display text-xl text-brand sm:text-2xl">
-          {property.nameZh}
-        </p>
-        <p className="mt-6 text-sm uppercase tracking-[0.2em] text-white/70 sm:text-base">
+        <h1 className="text-3xl font-bold leading-tight uppercase tracking-wide sm:text-4xl md:text-5xl lg:text-6xl">
           {property.tagline}
+        </h1>
+        <p className="mt-4 text-sm uppercase tracking-[0.3em] text-white/80 sm:text-base">
+          {property.subtitle}
         </p>
       </div>
 
