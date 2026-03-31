@@ -50,6 +50,7 @@ export default function About() {
                 src={property.about.image}
                 alt="Hub 8 Industrial Park"
                 fill
+                loading="eager"
                 className="object-cover"
                 sizes="(max-width: 1024px) 100vw, 58vw"
               />
