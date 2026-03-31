@@ -18,7 +18,7 @@ export const property = {
 
   contact: {
     phones: ["011 1300 3062", "011 1300 3063"],
-    whatsapp: "01113003062",
+    whatsapp: "6001113003062",
   },
 
   stats: [
