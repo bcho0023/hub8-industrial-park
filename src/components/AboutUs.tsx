@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useRef } from "react";
 import { ExternalLink } from "lucide-react";
 import { property } from "@/data/property";
@@ -43,6 +44,28 @@ export default function AboutUs() {
           </h2>
         </div>
 
+        {/* Images */}
+        <div className="animate-fade-up mb-12 grid grid-cols-1 gap-6 sm:grid-cols-2">
+          <div className="relative aspect-[3/2] overflow-hidden rounded-lg shadow-md shadow-black/5">
+            <Image
+              src="/images/wisma-peters.jpg"
+              alt="Wisma Peters headquarters"
+              fill
+              className="object-cover"
+              sizes="(max-width: 640px) 100vw, 50vw"
+            />
+          </div>
+          <div className="relative aspect-[3/2] overflow-hidden rounded-lg shadow-md shadow-black/5">
+            <Image
+              src="/images/peters-lobby.jpg"
+              alt="Peter's Group office lobby"
+              fill
+              className="object-cover"
+              sizes="(max-width: 640px) 100vw, 50vw"
+            />
+          </div>
+        </div>
+
         <div className="animate-fade-up mx-auto max-w-3xl text-center">
           <p className="text-lg font-medium text-charcoal">
             {property.developer.parent}
@@ -63,7 +86,7 @@ export default function AboutUs() {
             href={property.developer.website}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-8 inline-flex items-center gap-2 border border-charcoal px-8 py-3 text-sm uppercase tracking-widest text-charcoal transition-colors hover:bg-charcoal hover:text-white"
+            className="mt-8 inline-flex items-center gap-2 rounded-sm border border-charcoal px-8 py-3 text-sm uppercase tracking-widest text-charcoal transition-colors hover:bg-charcoal hover:text-white"
           >
             Visit Corporate Website
             <ExternalLink className="h-3.5 w-3.5" />

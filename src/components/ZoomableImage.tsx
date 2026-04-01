@@ -18,6 +18,8 @@ interface ZoomableImageProps {
   highlight?: boolean;
   /** Fixed aspect ratio for the zoomable area (e.g. "2/3") to equalize sizes */
   aspectRatio?: string;
+  /** Custom border color (hex) */
+  borderColor?: string;
 }
 
 export default function ZoomableImage({
@@ -30,12 +32,33 @@ export default function ZoomableImage({
   sizes = "100vw",
   highlight = false,
   aspectRatio,
+  borderColor,
 }: ZoomableImageProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const panzoomRef = useRef<any>(null);
   const [scale, setScale] = useState(1);
+  const [showHint, setShowHint] = useState(false);
+
+  useEffect(() => {
+    if (!wrapperRef.current) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setShowHint(true);
+          setTimeout(() => setShowHint(false), 4500);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.5 }
+    );
+
+    observer.observe(wrapperRef.current);
+    return () => observer.disconnect();
+  }, []);
 
   const initPanzoom = useCallback(async () => {
     if (!innerRef.current) return;
@@ -215,9 +238,20 @@ export default function ZoomableImage({
   }, [src, alt, width, height, fullWidth, fullHeight]);
 
   return (
-    <div className={`rounded-sm border bg-white transition-all ${
-      highlight ? "animate-highlight-border border-brand shadow-[0_0_12px_rgba(252,207,8,0.3)]" : "border-soft-grey"
-    }`}>
+    <div
+      ref={wrapperRef}
+      className={`relative rounded-sm border-2 bg-white transition-all ${
+        highlight ? "animate-highlight-border border-brand shadow-[0_0_12px_rgba(252,207,8,0.3)]" : borderColor ? "" : "border-soft-grey"
+      }`}
+      style={borderColor && !highlight ? { borderColor } : undefined}
+    >
+      {showHint && (
+        <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
+          <div className="animate-fade-out rounded-lg bg-charcoal/85 px-5 py-2.5 text-xs tracking-wide text-white/90 shadow-lg backdrop-blur-sm sm:text-sm">
+            Scroll to zoom · Drag to pan · Click ⤢ to enlarge
+          </div>
+        </div>
+      )}
       {/* Controls bar */}
       <div className="flex items-center justify-between border-b border-soft-grey px-4 py-2">
         <span className="text-xs text-medium-grey">

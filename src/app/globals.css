@@ -32,13 +32,17 @@
 }
 
 @keyframes fade-out {
-  0% { opacity: 1; }
-  80% { opacity: 1; }
+  0% { opacity: 0.9; }
+  8% { opacity: 0.5; }
+  16% { opacity: 0.9; }
+  24% { opacity: 0.5; }
+  32% { opacity: 0.9; }
+  75% { opacity: 0.9; }
   100% { opacity: 0; }
 }
 
 .animate-fade-out {
-  animation: fade-out 4.5s ease forwards;
+  animation: fade-out 5s ease forwards;
 }
 
 @keyframes highlight-border {

@@ -8,7 +8,6 @@ import ZoomableImage from "@/components/ZoomableImage";
 
 export default function Location() {
   const sectionRef = useRef<HTMLElement>(null);
-
   useGSAP((gsap) => {
     if (!sectionRef.current) return;
 

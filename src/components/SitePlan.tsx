@@ -5,9 +5,53 @@ import { property } from "@/data/property";
 import { useGSAP } from "@/lib/gsap";
 import ZoomableImage from "@/components/ZoomableImage";
 
+function Legend() {
+  return (
+    <>
+      {/* Compass */}
+      <div className="mb-8 flex items-center gap-2">
+        <svg width="32" height="40" viewBox="0 0 32 40" fill="none" className="text-charcoal">
+          <polygon points="16,0 22,16 16,12 10,16" fill="currentColor" />
+          <polygon points="16,40 10,24 16,28 22,24" fill="currentColor" opacity="0.3" />
+        </svg>
+        <span className="text-sm font-bold tracking-wide text-charcoal">N</span>
+      </div>
+
+      {/* Legend */}
+      <div className="space-y-5">
+        {property.sitePlan.legend?.map((group) => (
+          <div key={group.group}>
+            <p className="mb-2 text-xs font-bold uppercase tracking-widest text-charcoal">
+              {group.group}
+            </p>
+            <div className="space-y-1.5">
+              {group.types.map((t) => (
+                <div key={t.type} className="flex items-center gap-2.5">
+                  <span
+                    className="inline-block h-4 w-4 shrink-0 rounded-sm"
+                    style={{ backgroundColor: t.color }}
+                  />
+                  <span className="text-sm text-charcoal/70">{t.type}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Note */}
+      <div className="mt-6 border-t border-soft-grey pt-4">
+        <p className="text-xs leading-relaxed text-charcoal/80">
+          <span className="font-bold">Note:</span>{" "}
+          {property.sitePlan.note?.replace(/^Note:\s*/i, "")}
+        </p>
+      </div>
+    </>
+  );
+}
+
 export default function SitePlan() {
   const sectionRef = useRef<HTMLElement>(null);
-
   useGSAP((gsap) => {
     if (!sectionRef.current) return;
 
@@ -43,7 +87,8 @@ export default function SitePlan() {
           </h2>
         </div>
 
-        <div className="animate-fade-up mx-auto max-w-4xl">
+        {/* Mobile: stacked */}
+        <div className="animate-fade-up lg:hidden">
           <ZoomableImage
             src={property.sitePlan.image}
             alt="Hub 8 Industrial Park site plan"
@@ -51,13 +96,36 @@ export default function SitePlan() {
             height={1357}
             fullWidth={9934}
             fullHeight={7017}
-            sizes="(max-width: 1024px) 100vw, 896px"
+            sizes="100vw"
           />
-          <p className="mt-4 text-center text-xs leading-relaxed text-charcoal/80">
-            <span className="font-bold">Note:</span>{" "}
-            {property.sitePlan.note?.replace(/^Note:\s*/i, "")}
-          </p>
+          <div className="mt-6">
+            <Legend />
+          </div>
         </div>
+
+        {/* Desktop: site plan left, sticky legend right */}
+        <div className="hidden lg:flex lg:items-stretch lg:gap-12">
+          <div className="animate-fade-up min-w-0 flex-1">
+            <ZoomableImage
+              src={property.sitePlan.image}
+              alt="Hub 8 Industrial Park site plan"
+              width={1920}
+              height={1357}
+              fullWidth={9934}
+              fullHeight={7017}
+              sizes="70vw"
+            />
+          </div>
+
+          <div className="w-48 shrink-0">
+            <div className="sticky top-[35vh]">
+              <div className="animate-fade-up">
+                <Legend />
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </section>
   );

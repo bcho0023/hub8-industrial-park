@@ -18,7 +18,7 @@ export const property = {
 
   contact: {
     phones: ["011 1300 3062", "011 1300 3063"],
-    whatsapp: "6001113003062",
+    whatsapp: "601113003062",
   },
 
   stats: [
@@ -82,18 +82,44 @@ export const property = {
 
   floorplans: [
     {
-      label: "Type A",
+      type: "A1",
+      label: "Type A1",
       description: "2-Storey Semi-Detached Factory",
-      sublabel: "A1 (35' x 70') & A2 (35' x 85')",
-      image: "/blueprints/floorplan-typeA.png",
-      svg: "/blueprints/floorplan-typeA.svg",
+      specs: "35' x 70' · 3,595 ft² built-up · 7,800 ft² lot",
+      image: "/blueprints/floorplan-A1.png",
+      color: "#ec9011",
     },
     {
-      label: "Type B",
+      type: "A2",
+      label: "Type A2",
+      description: "2-Storey Semi-Detached Factory",
+      specs: "35' x 85' · 4,114 ft² built-up · 8,700 ft² lot",
+      image: "/blueprints/floorplan-A2.png",
+      color: "#baeec9",
+    },
+    {
+      type: "B1",
+      label: "Type B1",
       description: "3-Storey Semi-Detached Factory with Lift",
-      sublabel: "B1 / B2 / B3 variants",
-      image: "/blueprints/floorplan-typeB1.png",
-      svg: "/blueprints/floorplan-typeB1.svg",
+      specs: "35' x 70' · 5,924 ft² built-up · 7,800 ft² lot",
+      image: "/blueprints/floorplan-B1.png",
+      color: "#fecabc",
+    },
+    {
+      type: "B2",
+      label: "Type B2",
+      description: "3-Storey Semi-Detached Factory with Lift",
+      specs: "35' x 85' · 6,358 ft² built-up · 8,700 ft² lot",
+      image: "/blueprints/floorplan-B2.png",
+      color: "#8298e3",
+    },
+    {
+      type: "B3",
+      label: "Type B3",
+      description: "3-Storey Semi-Detached Factory with Lift",
+      specs: "40' x 85' · 7,181 ft² built-up · 9,425 ft² lot",
+      image: "/blueprints/floorplan-B3.png",
+      color: "#fdcd07",
     },
   ],
 
@@ -101,6 +127,23 @@ export const property = {
     image: "/blueprints/siteplan.png",
     svg: "/blueprints/siteplan.svg",
     note: "Note: Selected lots may include additional land and lot sizes may vary. Please refer to the sales team for specific lot details.",
+    legend: [
+      {
+        group: "2 Storey Semi-D",
+        types: [
+          { type: "A1", color: "#ec9011" },
+          { type: "A2", color: "#baeec9" },
+        ],
+      },
+      {
+        group: "3 Storey Semi-D",
+        types: [
+          { type: "B1", color: "#fecabc" },
+          { type: "B2", color: "#8298e3" },
+          { type: "B3", color: "#fdcd07" },
+        ],
+      },
+    ],
   },
 
   siteMap: {
@@ -111,6 +154,7 @@ export const property = {
   units: [
     {
       type: "A1",
+      color: "#ec9011",
       config: "2-Storey Semi-D",
       lotSize: "35' x 70'",
       lotSf: 7800,
@@ -120,6 +164,7 @@ export const property = {
     },
     {
       type: "A2",
+      color: "#baeec9",
       config: "2-Storey Semi-D",
       lotSize: "35' x 85'",
       lotSf: 8700,
@@ -129,6 +174,7 @@ export const property = {
     },
     {
       type: "B1",
+      color: "#fecabc",
       config: "3-Storey Semi-D with Lift",
       lotSize: "35' x 70'",
       lotSf: 7800,
@@ -138,6 +184,7 @@ export const property = {
     },
     {
       type: "B2",
+      color: "#8298e3",
       config: "3-Storey Semi-D with Lift",
       lotSize: "35' x 85'",
       lotSf: 8700,
@@ -147,6 +194,7 @@ export const property = {
     },
     {
       type: "B3",
+      color: "#fdcd07",
       config: "3-Storey Semi-D with Lift",
       lotSize: "40' x 85'",
       lotSf: 9425,
