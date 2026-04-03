@@ -28,13 +28,13 @@ export const property = {
       label: "Built-Up",
       rangeFrom: 3595,
       rangeTo: 7181,
-      unit: "ft²",
+      unit: "s.f.",
     },
     {
       label: "Typical Lot Sizes",
-      rangeFrom: 7181,
-      rangeTo: 7800,
-      unit: "ft²",
+      rangeFrom: 7008,
+      rangeTo: 9425,
+      unit: "s.f.",
     },
   ] as const,
 
@@ -131,16 +131,16 @@ export const property = {
       {
         group: "2 Storey Semi-D",
         types: [
-          { type: "A1", color: "#ec9011" },
-          { type: "A2", color: "#baeec9" },
+          { type: "A1", color: "#ec9011", lot: "35'x70'", builtUp: "3,595", lotSize: "7,800" },
+          { type: "A2", color: "#baeec9", lot: "35'x85'", builtUp: "4,114", lotSize: "8,700" },
         ],
       },
       {
         group: "3 Storey Semi-D",
         types: [
-          { type: "B1", color: "#fecabc" },
-          { type: "B2", color: "#8298e3" },
-          { type: "B3", color: "#fdcd07" },
+          { type: "B1", color: "#fecabc", lot: "35'x70'", builtUp: "5,924", lotSize: "7,800" },
+          { type: "B2", color: "#8298e3", lot: "35'x85'", builtUp: "6,358", lotSize: "8,700" },
+          { type: "B3", color: "#fdcd07", lot: "40'x85'", builtUp: "7,181", lotSize: "9,425" },
         ],
       },
     ],
@@ -266,7 +266,6 @@ export const property = {
 
   navItems: [
     { label: "Home", href: "#hero" },
-    { label: "Features", href: "#features" },
     { label: "About", href: "#about" },
     { label: "Gallery", href: "#gallery" },
     { label: "Location", href: "#location" },

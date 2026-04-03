@@ -24,14 +24,21 @@ function Legend() {
             <p className="mb-2 text-xs font-bold uppercase tracking-widest text-charcoal">
               {group.group}
             </p>
-            <div className="space-y-1.5">
+            <div className="space-y-2.5">
               {group.types.map((t) => (
-                <div key={t.type} className="flex items-center gap-2.5">
+                <div key={t.type} className="flex items-start gap-2.5">
                   <span
-                    className="inline-block h-4 w-4 shrink-0 rounded-sm"
+                    className="mt-0.5 inline-block h-4 w-4 shrink-0 rounded-sm"
                     style={{ backgroundColor: t.color }}
                   />
-                  <span className="text-sm text-charcoal/70">{t.type}</span>
+                  <div>
+                    <span className="text-sm font-medium text-charcoal">{t.type}</span>
+                    {"lot" in t && (
+                      <p className="text-xs text-charcoal/60">
+                        {t.lot} · {t.builtUp} s.f. · {t.lotSize} s.f.
+                      </p>
+                    )}
+                  </div>
                 </div>
               ))}
             </div>
@@ -117,7 +124,7 @@ export default function SitePlan() {
             />
           </div>
 
-          <div className="w-48 shrink-0">
+          <div className="w-64 shrink-0">
             <div className="sticky top-[35vh]">
               <div className="animate-fade-up">
                 <Legend />

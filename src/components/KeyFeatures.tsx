@@ -1,33 +1,14 @@
 "use client";
 
 import { useRef } from "react";
-import {
-  Warehouse,
-  Maximize,
-  Sun,
-  ShieldCheck,
-  Building2,
-  Zap,
-} from "lucide-react";
 import { property } from "@/data/property";
 import { useGSAP } from "@/lib/gsap";
 
-const iconMap = {
-  Warehouse,
-  Maximize,
-  Sun,
-  ShieldCheck,
-  Building2,
-  Zap,
-} as const;
-
 export default function KeyFeatures() {
-  const sectionRef = useRef<HTMLElement>(null);
   const statsRef = useRef<HTMLDivElement>(null);
-  const featuresRef = useRef<HTMLDivElement>(null);
 
   useGSAP((gsap) => {
-    if (!statsRef.current || !featuresRef.current) return;
+    if (!statsRef.current) return;
 
     // Counter animation for single numeric stats
     const statEls = statsRef.current.querySelectorAll("[data-stat-value]");
@@ -53,7 +34,6 @@ export default function KeyFeatures() {
       const target = Number(el.getAttribute("data-range-value"));
       if (!target) return;
 
-      // Format with commas during animation
       const obj = { val: 0 };
       gsap.to(obj, {
         val: target,
@@ -90,50 +70,33 @@ export default function KeyFeatures() {
 
     // Fade up each stat block individually
     Array.from(statsRef.current.children).forEach((el) => {
-      gsap.set(el, { y: 30, opacity: 0 });
-      gsap.to(el, {
-        y: 0,
-        opacity: 1,
-        duration: 0.8,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: el,
-          start: "top 85%",
-        },
-      });
-    });
-
-    // Fade up feature cards one by one
-    Array.from(featuresRef.current.children).forEach((el, i) => {
-      gsap.set(el, { y: 30, opacity: 0 });
-      gsap.to(el, {
-        y: 0,
-        opacity: 1,
-        delay: i * 0.12,
-        duration: 0.8,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: el,
-          start: "top 85%",
-        },
-      });
+      if (el instanceof HTMLElement && !el.classList.contains("accent-bar")) {
+        gsap.set(el, { y: 30, opacity: 0 });
+        gsap.to(el, {
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: el,
+            start: "top 85%",
+          },
+        });
+      }
     });
   });
 
   return (
     <section
       id="features"
-      ref={sectionRef}
       className="bg-white py-20 sm:py-28 lg:py-32"
     >
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        {/* Stats row */}
         <div
           ref={statsRef}
-          className="relative mb-20 grid grid-cols-2 gap-8 border-b border-soft-grey pb-10 sm:mb-24 sm:pb-12 lg:grid-cols-4 lg:gap-12"
+          className="relative grid grid-cols-2 gap-8 border-b border-soft-grey pb-10 sm:pb-12 lg:grid-cols-4 lg:gap-12"
         >
           {property.stats.map((stat) => {
-            // Range stat (e.g. 3,595 - 7,181 ft²)
             if ("rangeFrom" in stat) {
               return (
                 <div key={stat.label} className="text-center">
@@ -152,7 +115,6 @@ export default function KeyFeatures() {
               );
             }
 
-            // Display value stat (e.g. Freehold)
             if ("displayValue" in stat && stat.displayValue) {
               return (
                 <div key={stat.label} className="text-center">
@@ -170,7 +132,6 @@ export default function KeyFeatures() {
               );
             }
 
-            // Numeric counter stat (e.g. 20)
             return (
               <div key={stat.label} className="text-center">
                 <p
@@ -185,41 +146,7 @@ export default function KeyFeatures() {
               </div>
             );
           })}
-          <div className="absolute -bottom-px left-1/2 h-0.5 w-10 -translate-x-1/2 bg-brand" />
-        </div>
-
-        {/* Section heading */}
-        <div className="mb-12 text-center">
-          <p className="text-xs uppercase tracking-[0.3em] text-medium-grey">
-            Why Hub 8
-          </p>
-          <h2 className="mt-3 text-3xl font-bold text-charcoal sm:text-4xl">
-            Built for Business
-          </h2>
-        </div>
-
-        {/* Feature cards */}
-        <div
-          ref={featuresRef}
-          className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
-        >
-          {property.features.map((feature) => {
-            const Icon = iconMap[feature.icon];
-            return (
-              <div
-                key={feature.title}
-                className="group rounded-sm border border-soft-grey bg-warm-white p-8 transition-colors hover:border-brand/30"
-              >
-                <Icon className="mb-4 h-6 w-6 text-brand-dark" strokeWidth={1.5} />
-                <h3 className="mb-2 text-base font-medium text-charcoal">
-                  {feature.title}
-                </h3>
-                <p className="text-sm leading-relaxed text-charcoal/70">
-                  {feature.description}
-                </p>
-              </div>
-            );
-          })}
+          <div className="accent-bar absolute -bottom-px left-1/2 h-0.5 w-10 -translate-x-1/2 bg-brand" />
         </div>
       </div>
     </section>

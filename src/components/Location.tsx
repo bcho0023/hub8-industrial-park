@@ -59,6 +59,22 @@ export default function Location() {
 
           {/* Info */}
           <div className="animate-fade-up lg:col-span-4">
+            {/* Coordinates */}
+            <div className="mb-8">
+              <h3 className="mb-3 text-sm font-medium uppercase tracking-widest text-charcoal">
+                Coordinates
+              </h3>
+              <a
+                href={`https://www.google.com/maps?q=${property.location.lat},${property.location.lng}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-sm text-brand-dark hover:underline"
+              >
+                <MapPin className="h-3.5 w-3.5" />
+                {property.location.lat.toFixed(4)}, {property.location.lng.toFixed(4)}
+              </a>
+            </div>
+
             <div className="mb-8">
               <h3 className="mb-4 text-sm font-medium uppercase tracking-widest text-charcoal">
                 Key Highlights

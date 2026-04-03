@@ -58,7 +58,7 @@ export default function Hero() {
           alt="Hub 8 Industrial Park street view"
           fill
           priority
-          className="object-cover"
+          className="object-cover object-[center_30%] sm:object-center"
           sizes="100vw"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/70" />
