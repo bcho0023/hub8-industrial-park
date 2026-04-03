@@ -22,7 +22,7 @@ export default function AboutUs() {
         ease: "power2.out",
         scrollTrigger: {
           trigger: el,
-          start: "top 85%",
+          start: "top 95%",
         },
       });
     });

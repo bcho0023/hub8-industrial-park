@@ -24,7 +24,7 @@ export default function SiteProgress() {
       gsap.set(heading, { y: 30, opacity: 0 });
       gsap.to(heading, {
         y: 0, opacity: 1, duration: 0.8, ease: "power2.out",
-        scrollTrigger: { trigger: heading, start: "top 85%" },
+        scrollTrigger: { trigger: heading, start: "top 95%" },
       });
     }
 
@@ -32,7 +32,7 @@ export default function SiteProgress() {
       gsap.set(el, { y: 40, opacity: 0 });
       gsap.to(el, {
         y: 0, opacity: 1, delay: i * 0.12, duration: 0.8, ease: "power2.out",
-        scrollTrigger: { trigger: el, start: "top 85%" },
+        scrollTrigger: { trigger: el, start: "top 95%" },
       });
     });
   });
