@@ -297,7 +297,7 @@ export default function ZoomableImage({
         style={{
           cursor: scale > 1 ? "grab" : "zoom-in",
           touchAction: scale <= 1 ? "pan-y" : "none",
-          ...(aspectRatio ? { aspectRatio } : {}),
+          aspectRatio: aspectRatio || `${width} / ${height}`,
         }}
       >
         <div ref={innerRef} className="p-4">

@@ -19,6 +19,14 @@ export function loadGSAP() {
       const gsap = gsapModule.default;
       const ScrollTrigger = stModule.ScrollTrigger;
       gsap.registerPlugin(ScrollTrigger);
+
+      // Refresh trigger positions after all images/content load
+      if (typeof window !== "undefined") {
+        window.addEventListener("load", () => ScrollTrigger.refresh(), {
+          once: true,
+        });
+      }
+
       return { gsap, ScrollTrigger };
     });
   }
