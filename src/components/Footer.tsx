@@ -12,18 +12,6 @@ export default function Footer() {
             className="h-12 w-auto"
           />
 
-          <div className="flex gap-4">
-            {property.contact.phones.map((phone) => (
-              <a
-                key={phone}
-                href={`tel:${phone.replace(/\s/g, "")}`}
-                className="text-sm text-white/60 hover:text-white"
-              >
-                {phone}
-              </a>
-            ))}
-          </div>
-
           <div className="max-w-xl">
             <p className="text-xs leading-relaxed text-white/40">
               All illustrations and visual representations are intended solely

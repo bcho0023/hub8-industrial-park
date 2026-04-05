@@ -53,12 +53,22 @@ export default function Hero() {
     >
       {/* Background image */}
       <div ref={imageRef} className="absolute inset-0 -top-[10%] h-[120%]">
+        {/* Mobile image */}
+        <Image
+          src="/images/hero-mobile.jpg"
+          alt="Hub 8 Industrial Park building"
+          fill
+          priority
+          className="object-cover sm:hidden"
+          sizes="100vw"
+        />
+        {/* Desktop image */}
         <Image
           src="/images/hero.jpg"
           alt="Hub 8 Industrial Park street view"
           fill
           priority
-          className="object-cover object-[center_30%] sm:object-center"
+          className="hidden object-cover sm:block"
           sizes="100vw"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/70" />
